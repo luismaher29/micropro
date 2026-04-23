@@ -1,15 +1,5 @@
 import type { ReactNode } from "react";
-import {
-  Coins,
-  Flame,
-  Map,
-  ShieldCheck,
-  ShoppingBag,
-  Sparkles,
-  Trophy,
-  UserRound,
-} from "lucide-react";
-import { getRankFromXp, getTotalStars } from "../game/utils";
+import { Flame, Gem, Map, ShoppingBag, UserRound } from "lucide-react";
 import type { AppTab, PlayerProgress } from "../game/types";
 
 interface AppShellProps {
@@ -25,48 +15,51 @@ export function AppShell({
   progress,
   children,
 }: AppShellProps) {
-  const rank = getRankFromXp(progress.xp);
-  const stars = getTotalStars(progress);
-
   return (
     <div className="app-shell">
-      <div className="app-backdrop" />
       <header className="topbar">
-        <div className="brand-lockup">
-          <div className="brand-badge">
-            <Sparkles size={18} />
+        <div className="topbar-inner">
+          <div className="brand-lockup">
+            <div className="brand-badge">M</div>
+            <div className="brand-copy">
+              <span className="brand-name">MICROPRO</span>
+              <span className="brand-subtitle">MicroMaster Academy</span>
+            </div>
           </div>
-          <div>
-            <p className="eyebrow">MicroMaster Academy</p>
-            <h1>{rank}</h1>
-          </div>
-        </div>
 
-        <div className="topbar-stats">
-          <StatPill icon={<Flame size={16} />} label={`${progress.streak} dia${progress.streak === 1 ? "" : "s"}`} />
-          <StatPill icon={<Coins size={16} />} label={`${progress.coins}`} />
-          <StatPill icon={<Trophy size={16} />} label={`${stars} estrellas`} />
+          <div className="topbar-stats">
+            <StatPill
+              tone="fire"
+              icon={<Flame size={18} />}
+              label={`${progress.streak}`}
+            />
+            <StatPill
+              tone="gem"
+              icon={<Gem size={18} />}
+              label={`${progress.coins}`}
+            />
+          </div>
         </div>
       </header>
 
       <main className="app-main">{children}</main>
 
-      <nav className="bottom-nav" aria-label="Secciones de la app">
+      <nav className="bottom-nav" aria-label="Secciones principales">
         <NavButton
           active={activeTab === "map"}
-          icon={<Map size={18} />}
+          icon={<Map size={20} />}
           label="Mundos"
           onClick={() => onTabChange("map")}
         />
         <NavButton
           active={activeTab === "shop"}
-          icon={<ShoppingBag size={18} />}
+          icon={<ShoppingBag size={20} />}
           label="Tienda"
           onClick={() => onTabChange("shop")}
         />
         <NavButton
           active={activeTab === "profile"}
-          icon={<UserRound size={18} />}
+          icon={<UserRound size={20} />}
           label="Perfil"
           onClick={() => onTabChange("profile")}
         />
@@ -75,10 +68,18 @@ export function AppShell({
   );
 }
 
-function StatPill({ icon, label }: { icon: ReactNode; label: string }) {
+function StatPill({
+  icon,
+  label,
+  tone,
+}: {
+  icon: ReactNode;
+  label: string;
+  tone: "fire" | "gem";
+}) {
   return (
-    <div className="stat-pill">
-      <span>{icon}</span>
+    <div className={`stat-pill ${tone}`}>
+      <span className="stat-icon">{icon}</span>
       <strong>{label}</strong>
     </div>
   );
@@ -101,9 +102,8 @@ function NavButton({
       className={`nav-button ${active ? "is-active" : ""}`}
       onClick={onClick}
     >
-      <span className="nav-icon">{icon}</span>
-      <span>{label}</span>
-      {active ? <ShieldCheck size={14} /> : null}
+      <span className="nav-icon-wrap">{icon}</span>
+      <span className="nav-label">{label}</span>
     </button>
   );
 }

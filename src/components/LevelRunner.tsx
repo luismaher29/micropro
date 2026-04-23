@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { ArrowRight, BadgeX, CheckCircle2, X } from "lucide-react";
+import type { CSSProperties } from "react";
+import { ArrowRight, PartyPopper, X } from "lucide-react";
 import type { Level } from "../game/types";
 
 interface LevelRunnerProps {
@@ -7,6 +8,14 @@ interface LevelRunnerProps {
   onClose: () => void;
   onComplete: (payload: { levelId: string; correctAnswers: number }) => void;
 }
+
+const confettiPieces = Array.from({ length: 20 }, (_, index) => ({
+  id: index,
+  left: 5 + ((index * 9) % 90),
+  delay: (index % 6) * 0.12,
+  duration: 2.2 + (index % 4) * 0.35,
+  rotation: index % 2 === 0 ? 18 : -18,
+}));
 
 export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
   const [stepIndex, setStepIndex] = useState(0);
@@ -25,6 +34,7 @@ export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
   );
 
   const isCorrect = selectedOptionId === step.correctOptionId;
+  const isFinalStep = stepIndex === level.steps.length - 1;
   const progressValue = ((stepIndex + (showFeedback ? 1 : 0)) / level.steps.length) * 100;
 
   const handleCheck = () => {
@@ -37,7 +47,7 @@ export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
   };
 
   const handleContinue = () => {
-    if (stepIndex === level.steps.length - 1) {
+    if (isFinalStep) {
       onComplete({
         levelId: level.id,
         correctAnswers:
@@ -52,29 +62,49 @@ export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
   };
 
   return (
-    <div className="modal-shell">
-      <div className="modal-panel">
-        <div className="runner-header">
-          <button type="button" className="icon-button" onClick={onClose} aria-label="Cerrar nivel">
-            <X size={18} />
+    <div className="runner-shell">
+      <div className="runner-screen">
+        <div className="runner-topbar">
+          <button
+            type="button"
+            className="runner-close"
+            onClick={onClose}
+            aria-label="Cerrar nivel"
+          >
+            <X size={20} />
           </button>
+
           <div className="runner-progress">
             <div style={{ width: `${progressValue}%` }} />
           </div>
         </div>
 
-        <div className="runner-body">
-          <div className="runner-intro">
-            <span className="eyebrow">{level.difficulty}</span>
-            <h2>{level.title}</h2>
-            <p>{level.description}</p>
-          </div>
+        <div className="runner-stage">
+          {showFeedback && isCorrect ? (
+            <div className="confetti-layer" aria-hidden="true">
+              {confettiPieces.map((piece) => (
+                <span
+                  key={piece.id}
+                  className="confetti-piece"
+                  style={
+                    {
+                      "--left": `${piece.left}%`,
+                      "--delay": `${piece.delay}s`,
+                      "--duration": `${piece.duration}s`,
+                      "--rotation": `${piece.rotation}deg`,
+                    } as CSSProperties
+                  }
+                />
+              ))}
+            </div>
+          ) : null}
 
-          {step.theory ? <div className="theory-card">{step.theory}</div> : null}
+          {step.theory ? <div className="theory-bubble">💡 {step.theory}</div> : null}
 
-          <div className="question-card">
-            <h3>{step.prompt}</h3>
-            <div className="option-list">
+          <div className="runner-question-card">
+            <h2>{step.prompt}</h2>
+
+            <div className="runner-options">
               {step.options.map((option) => {
                 const active = selectedOptionId === option.id;
                 const correct = showFeedback && option.id === step.correctOptionId;
@@ -84,7 +114,7 @@ export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
                   <button
                     key={option.id}
                     type="button"
-                    className={`option-button ${active ? "is-active" : ""} ${
+                    className={`runner-option ${active ? "is-active" : ""} ${
                       correct ? "is-correct" : ""
                     } ${incorrect ? "is-incorrect" : ""}`}
                     onClick={() => !showFeedback && setSelectedOptionId(option.id)}
@@ -98,30 +128,37 @@ export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
           </div>
         </div>
 
-        <div className={`runner-footer ${showFeedback ? (isCorrect ? "is-correct" : "is-incorrect") : ""}`}>
+        <div className={`feedback-footer ${showFeedback ? (isCorrect ? "is-correct" : "is-incorrect") : ""}`}>
           {!showFeedback ? (
             <button
               type="button"
-              className="primary-button"
+              className="footer-action is-idle"
               onClick={handleCheck}
               disabled={!selectedOptionId}
             >
-              Revisar respuesta
+              Comprobar
             </button>
           ) : (
-            <div className="feedback-stack">
-              <div className="feedback-copy">
-                {isCorrect ? <CheckCircle2 size={22} /> : <BadgeX size={22} />}
-                <div>
-                  <strong>{isCorrect ? "Muy bien" : "Vamos de nuevo"}</strong>
+            <>
+              <div className="feedback-banner">
+                <div className="feedback-icon-box">
+                  {isCorrect ? <PartyPopper size={24} /> : <span>🤔</span>}
+                </div>
+                <div className="feedback-copy">
+                  <strong>{isCorrect ? "¡Increible!" : "Casi lo logras"}</strong>
                   <p>{step.explanation}</p>
                 </div>
               </div>
-              <button type="button" className="primary-button" onClick={handleContinue}>
-                {stepIndex === level.steps.length - 1 ? "Cerrar nivel" : "Siguiente pregunta"}
-                <ArrowRight size={16} />
+
+              <button
+                type="button"
+                className={`footer-action ${isCorrect ? "is-correct" : "is-incorrect"}`}
+                onClick={handleContinue}
+              >
+                {isFinalStep ? "Finalizar nivel" : "Continuar"}
+                <ArrowRight size={18} />
               </button>
-            </div>
+            </>
           )}
         </div>
       </div>

@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { Check, Lock, Play, Star } from "lucide-react";
 import type { PlayerProgress, World } from "../game/types";
-import { getWorldCompletionRatio, isLevelUnlocked } from "../game/utils";
+import { isLevelUnlocked } from "../game/utils";
 
 interface WorldMapProps {
   worlds: World[];
@@ -9,73 +9,79 @@ interface WorldMapProps {
   onSelectLevel: (levelId: string) => void;
 }
 
+const levelOffsets = [0, 36, -14, 44, -8];
+
 export function WorldMap({ worlds, progress, onSelectLevel }: WorldMapProps) {
   return (
     <div className="world-map">
       {worlds.map((world) => {
-        const ratio = Math.round(getWorldCompletionRatio(progress, world) * 100);
         const isWorldUnlocked = progress.unlockedWorldIds.includes(world.id);
 
         return (
           <section
             key={world.id}
-            className="world-card"
+            className={`world-stage ${isWorldUnlocked ? "" : "is-locked"}`}
             style={
               {
                 "--world-accent": world.theme.accent,
-                "--world-surface": world.theme.surface,
                 "--world-shadow": world.theme.shadow,
-                "--world-glow": world.theme.glow,
+                "--world-surface": world.theme.surface,
               } as CSSProperties
             }
           >
-            <div className="world-header">
-              <div>
-                <p className="eyebrow">Mundo {world.order}</p>
-                <h3>{world.name}</h3>
-                <p className="world-subtitle">{world.subtitle}</p>
-              </div>
-              <div className={`world-progress ${isWorldUnlocked ? "" : "is-locked"}`}>
-                <span>{ratio}%</span>
-              </div>
+            <div className="world-banner">
+              <span className="world-kicker">Mundo {world.order}</span>
+              <h2>{world.name}</h2>
             </div>
 
-            <p className="world-summary">{world.summary}</p>
-
-            <div className="level-grid">
+            <div className="world-path">
               {world.levels.map((level, levelIndex) => {
                 const unlocked = isLevelUnlocked(progress, world, levelIndex);
                 const result = progress.levelResults[level.id];
                 const completed = Boolean(result?.completed);
+                const offset = levelOffsets[levelIndex % levelOffsets.length];
 
                 return (
-                  <button
+                  <div
                     key={level.id}
-                    type="button"
-                    className={`level-node ${completed ? "is-complete" : ""} ${
-                      unlocked ? "" : "is-locked"
+                    className={`path-stop ${unlocked ? "" : "is-locked"} ${
+                      completed ? "is-complete" : ""
                     }`}
-                    onClick={() => unlocked && onSelectLevel(level.id)}
-                    disabled={!unlocked}
+                    style={{ "--offset-x": `${offset}px` } as CSSProperties}
                   >
-                    <div className="level-node-top">
-                      <span className="eyebrow">{level.difficulty}</span>
-                      <span className="level-reward">+{level.reward.coins}</span>
+                    <div className="level-title-card">
+                      <span>Nivel {levelIndex + 1}</span>
+                      <strong>{level.title}</strong>
                     </div>
-                    <strong>{level.title}</strong>
-                    <p>{level.description}</p>
 
-                    <div className="level-node-bottom">
-                      <span className="level-action">
-                        {completed ? <Check size={16} /> : unlocked ? <Play size={16} /> : <Lock size={16} />}
-                        {completed ? "Repetir" : unlocked ? "Jugar" : "Bloqueado"}
+                    <button
+                      type="button"
+                      className={`level-medal ${completed ? "is-complete" : ""} ${
+                        unlocked ? "is-unlocked" : "is-locked"
+                      }`}
+                      onClick={() => unlocked && onSelectLevel(level.id)}
+                      disabled={!unlocked}
+                    >
+                      <span className="level-medal-core">
+                        {completed ? (
+                          <Star size={34} fill="currentColor" />
+                        ) : unlocked ? (
+                          <Play size={26} fill="currentColor" />
+                        ) : (
+                          <Lock size={26} />
+                        )}
                       </span>
-                      <span className="level-stars">
-                        <Star size={14} />
-                        {result?.stars ?? 0}/3
-                      </span>
-                    </div>
-                  </button>
+                      {completed ? (
+                        <span className="level-check">
+                          <Check size={16} />
+                        </span>
+                      ) : null}
+                    </button>
+
+                    {levelIndex < world.levels.length - 1 ? (
+                      <div className="path-connector" />
+                    ) : null}
+                  </div>
                 );
               })}
             </div>
