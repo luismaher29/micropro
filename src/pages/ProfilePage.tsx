@@ -104,14 +104,16 @@ export function ProfilePage({ progress, onReset }: ProfilePageProps) {
 
         {unlockedRewards.length === 0 ? (
           <div className="empty-state">
-            <p>Completa niveles y visita la tienda para comenzar tu coleccion.</p>
+            <p>Completa niveles y visita la tienda para empezar a canjear descuentos provisionales.</p>
           </div>
         ) : (
           <div className="reward-showcase">
             {unlockedRewards.map((reward) => (
               <article key={reward.id} className="showcase-card">
-                <strong>{reward.name}</strong>
-                <p>{reward.perk}</p>
+                <strong>{reward.titulo}</strong>
+                <p>
+                  {reward.tipo} · {reward.descuento} · Codigo {reward.codigoPlaceholder}
+                </p>
               </article>
             ))}
           </div>

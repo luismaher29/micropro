@@ -30,7 +30,7 @@ export default function App() {
     [activeLevelId],
   );
 
-  const handleLevelComplete = (payload: { levelId: string; correctAnswers: number }) => {
+  const handleLevelComplete = (payload: { levelId: string; mistakes: number }) => {
     const summary = completeLevel(payload);
     setActiveLevelId(null);
     if (summary) {

@@ -37,7 +37,7 @@ export const WORLDS: World[] = [
   {
     id: "world-1",
     order: 1,
-    name: "Skin Foundations",
+    name: "Fundamentos de la Piel",
     subtitle: "Lee la piel antes de tocar la maquina",
     summary:
       "Base anatomica para decidir profundidad, presion y seguridad desde la primera pasada.",
@@ -52,7 +52,7 @@ export const WORLDS: World[] = [
         "world-1-level-1",
         "Capas de la piel",
         "Ubica el deposito correcto del pigmento.",
-        "Intro",
+        "Inicio",
         90,
         40,
         [
@@ -99,7 +99,7 @@ export const WORLDS: World[] = [
         "world-1-level-2",
         "Tipos de piel",
         "Relaciona textura y respuesta del tejido.",
-        "Intro",
+        "Inicio",
         95,
         45,
         [
@@ -145,7 +145,7 @@ export const WORLDS: World[] = [
         "world-1-level-3",
         "Sensibilidad y barrera",
         "Evalua reactividad antes del diseno.",
-        "Core",
+        "Practica",
         110,
         55,
         [
@@ -191,7 +191,7 @@ export const WORLDS: World[] = [
         "world-1-level-4",
         "Diagnostico visual",
         "Observa textura, poro y cicatrices.",
-        "Core",
+        "Practica",
         120,
         60,
         [
@@ -235,9 +235,9 @@ export const WORLDS: World[] = [
       ),
       createLevel(
         "world-1-level-5",
-        "Boss: lectura integral",
+        "Jefe: lectura integral",
         "Aplica diagnostico completo antes de iniciar.",
-        "Boss",
+        "Jefe",
         180,
         95,
         [
@@ -284,7 +284,7 @@ export const WORLDS: World[] = [
   {
     id: "world-2",
     order: 2,
-    name: "Pigment Logic",
+    name: "Logica del Pigmento",
     subtitle: "Entiende base, CI y comportamiento del color",
     summary:
       "Decide tonos con criterio tecnico para evitar virajes, saturacion innecesaria y resultados inestables.",
@@ -299,7 +299,7 @@ export const WORLDS: World[] = [
         "world-2-level-1",
         "Composicion del pigmento",
         "Separa particulas, base y vehiculo.",
-        "Intro",
+        "Inicio",
         100,
         50,
         [
@@ -345,7 +345,7 @@ export const WORLDS: World[] = [
         "world-2-level-2",
         "Subtonos y bases",
         "Aprende a leer temperatura real.",
-        "Intro",
+        "Inicio",
         105,
         50,
         [
@@ -391,7 +391,7 @@ export const WORLDS: World[] = [
         "world-2-level-3",
         "Neutralizacion",
         "Corrige sin sobrecargar la piel.",
-        "Core",
+        "Practica",
         115,
         60,
         [
@@ -437,7 +437,7 @@ export const WORLDS: World[] = [
         "world-2-level-4",
         "Retencion del color",
         "Relaciona tecnica y calidad del tono.",
-        "Core",
+        "Practica",
         120,
         65,
         [
@@ -481,9 +481,9 @@ export const WORLDS: World[] = [
       ),
       createLevel(
         "world-2-level-5",
-        "Boss: eleccion maestra",
+        "Jefe: eleccion maestra",
         "Combina base, residuo y objetivo final.",
-        "Boss",
+        "Jefe",
         190,
         100,
         [
@@ -530,7 +530,7 @@ export const WORLDS: World[] = [
   {
     id: "world-3",
     order: 3,
-    name: "Brow Architecture",
+    name: "Arquitectura de Cejas",
     subtitle: "Disena estructura antes del detalle",
     summary:
       "Construye forma, equilibrio y direccion del trazo para resultados naturales y sostenibles.",
@@ -545,7 +545,7 @@ export const WORLDS: World[] = [
         "world-3-level-1",
         "Mapping basico",
         "Ordena proporciones y puntos de referencia.",
-        "Intro",
+        "Inicio",
         105,
         50,
         [
@@ -591,7 +591,7 @@ export const WORLDS: World[] = [
         "world-3-level-2",
         "Inicio, arco y cola",
         "Distribuye tension visual en la ceja.",
-        "Intro",
+        "Inicio",
         110,
         55,
         [
@@ -637,7 +637,7 @@ export const WORLDS: World[] = [
         "world-3-level-3",
         "Direccion del trazo",
         "Imita crecimiento y flujo real.",
-        "Core",
+        "Practica",
         120,
         60,
         [
@@ -683,7 +683,7 @@ export const WORLDS: World[] = [
         "world-3-level-4",
         "Patrones naturales",
         "Usa variedad controlada en lugar de copiar.",
-        "Core",
+        "Practica",
         125,
         65,
         [
@@ -727,9 +727,9 @@ export const WORLDS: World[] = [
       ),
       createLevel(
         "world-3-level-5",
-        "Boss: brow blueprint",
+        "Jefe: plano maestro de cejas",
         "Une forma, flujo y balance visual.",
-        "Boss",
+        "Jefe",
         200,
         105,
         [
@@ -776,7 +776,7 @@ export const WORLDS: World[] = [
   {
     id: "world-4",
     order: 4,
-    name: "Procedure Lab",
+    name: "Laboratorio del Procedimiento",
     subtitle: "Controla tecnica, seguridad y ritmo de trabajo",
     summary:
       "Optimiza mano, maquina y protocolo para proteger la piel y sostener calidad durante toda la sesion.",
@@ -791,7 +791,7 @@ export const WORLDS: World[] = [
         "world-4-level-1",
         "Bioseguridad activa",
         "Previene riesgos antes, durante y despues.",
-        "Intro",
+        "Inicio",
         110,
         55,
         [
@@ -837,7 +837,7 @@ export const WORLDS: World[] = [
         "world-4-level-2",
         "Profundidad y presion",
         "Encuentra el punto de trabajo estable.",
-        "Intro",
+        "Inicio",
         115,
         60,
         [
@@ -883,7 +883,7 @@ export const WORLDS: World[] = [
         "world-4-level-3",
         "Ritmo de mano",
         "Coordina velocidad, tension y limpieza.",
-        "Core",
+        "Practica",
         125,
         65,
         [
@@ -929,7 +929,7 @@ export const WORLDS: World[] = [
         "world-4-level-4",
         "Lectura durante la sesion",
         "Ajusta segun respuesta real del tejido.",
-        "Core",
+        "Practica",
         130,
         70,
         [
@@ -973,9 +973,9 @@ export const WORLDS: World[] = [
       ),
       createLevel(
         "world-4-level-5",
-        "Boss: control total",
+        "Jefe: control total",
         "Integra protocolo, mano y lectura en vivo.",
-        "Boss",
+        "Jefe",
         210,
         110,
         [
@@ -1022,7 +1022,7 @@ export const WORLDS: World[] = [
   {
     id: "world-5",
     order: 5,
-    name: "Retention Mastery",
+    name: "Dominio de la Retencion",
     subtitle: "Piensa en sanado, seguimiento y correccion",
     summary:
       "Cierra el ciclo del servicio con criterio de evolucion, retoque y crecimiento profesional.",
@@ -1037,7 +1037,7 @@ export const WORLDS: World[] = [
         "world-5-level-1",
         "Cuidados posteriores",
         "Protege el resultado despues de la sesion.",
-        "Intro",
+        "Inicio",
         115,
         60,
         [
@@ -1083,7 +1083,7 @@ export const WORLDS: World[] = [
         "world-5-level-2",
         "Lectura del sanado",
         "Interpreta cambios sin entrar en panico.",
-        "Intro",
+        "Inicio",
         120,
         60,
         [
@@ -1129,7 +1129,7 @@ export const WORLDS: World[] = [
         "world-5-level-3",
         "Retoques con criterio",
         "Corrige lo justo, no por ansiedad.",
-        "Core",
+        "Practica",
         130,
         70,
         [
@@ -1175,7 +1175,7 @@ export const WORLDS: World[] = [
         "world-5-level-4",
         "Correcciones inteligentes",
         "Decide cuando mejorar y cuando derivar.",
-        "Core",
+        "Practica",
         135,
         75,
         [
@@ -1219,9 +1219,9 @@ export const WORLDS: World[] = [
       ),
       createLevel(
         "world-5-level-5",
-        "Boss: vision profesional",
+        "Jefe: vision profesional",
         "Piensa mas alla del dia de la sesion.",
-        "Boss",
+        "Jefe",
         220,
         120,
         [

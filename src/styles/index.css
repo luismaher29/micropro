@@ -421,6 +421,16 @@ button {
   border-radius: 999px;
 }
 
+.section-chip {
+  border: 0;
+  font-weight: 900;
+}
+
+.is-active-chip {
+  background: #77cc39;
+  color: #fff;
+}
+
 .section-header,
 .reward-title-row {
   display: flex;
@@ -433,6 +443,12 @@ button {
 .reward-showcase {
   display: grid;
   gap: 14px;
+}
+
+.shop-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .reward-list {
@@ -603,10 +619,11 @@ button {
   inset: 0;
   z-index: 30;
   background: #fff;
+  overflow: hidden;
 }
 
 .runner-screen {
-  min-height: 100vh;
+  height: 100dvh;
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
@@ -641,10 +658,12 @@ button {
 .runner-stage {
   position: relative;
   display: grid;
-  align-content: center;
+  align-content: start;
   justify-items: center;
   gap: 28px;
   padding: 20px 24px 180px;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .theory-bubble {

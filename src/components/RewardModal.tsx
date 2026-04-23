@@ -34,6 +34,12 @@ export function RewardModal({ summary, onClose }: RewardModalProps) {
           </div>
         </div>
 
+        <p>
+          {summary.mistakes === 0
+            ? "Completaste el nivel sin errores. Excelente dominio."
+            : `Tuviste ${summary.mistakes} intento${summary.mistakes === 1 ? "" : "s"} extra antes de dominarlo.`}
+        </p>
+
         {summary.unlockedWorldName ? (
           <div className="unlock-banner">
             <strong>Nuevo mundo</strong>

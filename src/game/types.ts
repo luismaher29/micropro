@@ -23,7 +23,7 @@ export interface Level {
   id: string;
   title: string;
   description: string;
-  difficulty: "Intro" | "Core" | "Boss";
+  difficulty: "Inicio" | "Practica" | "Jefe";
   reward: LevelReward;
   steps: QuestionStep[];
 }
@@ -47,12 +47,13 @@ export interface World {
 
 export interface RewardItem {
   id: string;
-  name: string;
+  tipo: "curso" | "masterclass" | "ebook";
+  titulo: string;
   description: string;
-  cost: number;
-  category: "toolkit" | "avatar" | "booster" | "certificate";
+  descuento: string;
+  costoMonedas: number;
   icon: string;
-  perk: string;
+  codigoPlaceholder: string;
 }
 
 export interface LevelResult {
@@ -78,6 +79,7 @@ export interface CompletionSummary {
   xpAwarded: number;
   coinsAwarded: number;
   starsEarned: number;
+  mistakes: number;
   unlockedWorldName?: string;
   firstClear: boolean;
 }

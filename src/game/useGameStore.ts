@@ -18,7 +18,7 @@ import type {
 
 interface CompleteLevelInput {
   levelId: string;
-  correctAnswers: number;
+  mistakes: number;
 }
 
 interface GameState {
@@ -33,7 +33,7 @@ export const useGameStore = create<GameState>()(
   persist(
     (set, get) => ({
       progress: getInitialProgress(),
-      completeLevel: ({ levelId, correctAnswers }) => {
+      completeLevel: ({ levelId, mistakes }) => {
         const details = findWorldAndLevel(levelId);
         if (!details) {
           return null;
@@ -46,16 +46,23 @@ export const useGameStore = create<GameState>()(
 
         set((state) => {
           const previousResult = state.progress.levelResults[levelId];
-          const starsEarned = calculateStars(correctAnswers, totalQuestions);
-          const score = Math.round((correctAnswers / totalQuestions) * 100);
+          const starsEarned = calculateStars(mistakes);
+          const score = Math.max(
+            0,
+            Math.round((totalQuestions / (totalQuestions + mistakes)) * 100),
+          );
           const firstClear = !previousResult?.completed;
           const previousStars = previousResult?.stars ?? 0;
           const starBonus = Math.max(starsEarned - previousStars, 0) * 12;
-          const perfectBonus = correctAnswers === totalQuestions ? 18 : 0;
+          const perfectBonus = mistakes === 0 ? 18 : 0;
           const replayMultiplier = firstClear ? 1 : 0.35;
-          const xpAwarded = Math.round(level.reward.xp * replayMultiplier) + starBonus;
+          const xpAwarded =
+            Math.round(level.reward.xp * replayMultiplier) + starBonus - Math.min(mistakes * 4, 20);
           const coinsAwarded =
-            Math.round(level.reward.coins * replayMultiplier) + starBonus + perfectBonus;
+            Math.round(level.reward.coins * replayMultiplier) +
+            starBonus +
+            perfectBonus -
+            Math.min(mistakes * 2, 10);
 
           const levelResults = {
             ...state.progress.levelResults,
@@ -64,7 +71,7 @@ export const useGameStore = create<GameState>()(
               stars: Math.max(starsEarned, previousStars),
               score: Math.max(score, previousResult?.score ?? 0),
               attempts: (previousResult?.attempts ?? 0) + 1,
-              perfect: (previousResult?.perfect ?? false) || correctAnswers === totalQuestions,
+              perfect: (previousResult?.perfect ?? false) || mistakes === 0,
               lastPlayedAt: new Date().toISOString(),
             },
           };
@@ -79,9 +86,10 @@ export const useGameStore = create<GameState>()(
             : state.progress.unlockedWorldIds;
 
           summary = {
-            xpAwarded,
-            coinsAwarded,
+            xpAwarded: Math.max(10, xpAwarded),
+            coinsAwarded: Math.max(6, coinsAwarded),
             starsEarned,
+            mistakes,
             firstClear,
             unlockedWorldName:
               worldCompleted && nextWorld && !state.progress.unlockedWorldIds.includes(nextWorld.id)
@@ -92,8 +100,8 @@ export const useGameStore = create<GameState>()(
           return {
             progress: {
               ...state.progress,
-              xp: state.progress.xp + xpAwarded,
-              coins: state.progress.coins + coinsAwarded,
+              xp: state.progress.xp + Math.max(10, xpAwarded),
+              coins: state.progress.coins + Math.max(6, coinsAwarded),
               unlockedWorldIds,
               levelResults,
             },
@@ -113,21 +121,21 @@ export const useGameStore = create<GameState>()(
           return { success: false, message: "Ya la desbloqueaste." };
         }
 
-        if (state.progress.coins < reward.cost) {
+        if (state.progress.coins < reward.costoMonedas) {
           return { success: false, message: "No tienes monedas suficientes." };
         }
 
         set((currentState) => ({
           progress: {
             ...currentState.progress,
-            coins: currentState.progress.coins - reward.cost,
+            coins: currentState.progress.coins - reward.costoMonedas,
             unlockedRewardIds: [...currentState.progress.unlockedRewardIds, rewardId],
           },
         }));
 
         return {
           success: true,
-          message: `${reward.name} ya forma parte de tu vitrina.`,
+          message: `${reward.titulo} ya quedo reservado como descuento provisional.`,
         };
       },
       updateStreak: () => {

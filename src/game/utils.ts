@@ -24,12 +24,11 @@ export const findWorldAndLevel = (
   return null;
 };
 
-export const calculateStars = (correctAnswers: number, totalQuestions: number): number => {
-  const ratio = correctAnswers / totalQuestions;
-  if (ratio === 1) {
+export const calculateStars = (mistakes: number): number => {
+  if (mistakes === 0) {
     return 3;
   }
-  if (ratio >= 0.67) {
+  if (mistakes <= 2) {
     return 2;
   }
   return 1;
@@ -66,18 +65,18 @@ export const getTotalLevelsCount = (): number => flattenLevels().length;
 
 export const getRankFromXp = (xp: number): string => {
   if (xp >= 2200) {
-    return "Elite Mentor";
+    return "Mentora Elite";
   }
   if (xp >= 1600) {
-    return "Studio Master";
+    return "Maestra de Estudio";
   }
   if (xp >= 1000) {
-    return "Advanced Artist";
+    return "Artista Avanzada";
   }
   if (xp >= 500) {
-    return "Rising Specialist";
+    return "Especialista en Ascenso";
   }
-  return "Skin Explorer";
+  return "Exploradora de Piel";
 };
 
 export const getDateKey = (date = new Date()): string => {

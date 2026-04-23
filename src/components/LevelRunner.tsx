@@ -6,7 +6,7 @@ import type { Level } from "../game/types";
 interface LevelRunnerProps {
   level: Level;
   onClose: () => void;
-  onComplete: (payload: { levelId: string; correctAnswers: number }) => void;
+  onComplete: (payload: { levelId: string; mistakes: number }) => void;
 }
 
 const confettiPieces = Array.from({ length: 20 }, (_, index) => ({
@@ -22,40 +22,43 @@ export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [checkedSteps, setCheckedSteps] = useState<Record<string, string>>({});
   const [showFeedback, setShowFeedback] = useState(false);
+  const [mistakes, setMistakes] = useState(0);
 
   const step = level.steps[stepIndex];
-  const correctAnswers = useMemo(
-    () =>
-      Object.entries(checkedSteps).filter(([stepId, optionId]) => {
-        const currentStep = level.steps.find((item) => item.id === stepId);
-        return currentStep?.correctOptionId === optionId;
-      }).length,
-    [checkedSteps, level.steps],
-  );
+  const answeredSteps = useMemo(() => Object.keys(checkedSteps).length, [checkedSteps]);
 
   const isCorrect = selectedOptionId === step.correctOptionId;
   const isFinalStep = stepIndex === level.steps.length - 1;
-  const progressValue = ((stepIndex + (showFeedback ? 1 : 0)) / level.steps.length) * 100;
+  const progressValue = ((answeredSteps + (showFeedback && isCorrect ? 1 : 0)) / level.steps.length) * 100;
 
   const handleCheck = () => {
     if (!selectedOptionId) {
       return;
     }
 
-    setCheckedSteps((current) => ({ ...current, [step.id]: selectedOptionId }));
+    if (selectedOptionId !== step.correctOptionId) {
+      setMistakes((current) => current + 1);
+    }
     setShowFeedback(true);
   };
 
   const handleContinue = () => {
+    if (!isCorrect) {
+      setSelectedOptionId(null);
+      setShowFeedback(false);
+      return;
+    }
+
     if (isFinalStep) {
+      setCheckedSteps((current) => ({ ...current, [step.id]: selectedOptionId ?? step.correctOptionId }));
       onComplete({
         levelId: level.id,
-        correctAnswers:
-          correctAnswers + (checkedSteps[step.id] ? 0 : isCorrect ? 1 : 0),
+        mistakes,
       });
       return;
     }
 
+    setCheckedSteps((current) => ({ ...current, [step.id]: selectedOptionId ?? step.correctOptionId }));
     setShowFeedback(false);
     setSelectedOptionId(null);
     setStepIndex((current) => current + 1);
@@ -155,7 +158,7 @@ export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
                 className={`footer-action ${isCorrect ? "is-correct" : "is-incorrect"}`}
                 onClick={handleContinue}
               >
-                {isFinalStep ? "Finalizar nivel" : "Continuar"}
+                {isCorrect ? (isFinalStep ? "Finalizar nivel" : "Continuar") : "Volver a intentar"}
                 <ArrowRight size={18} />
               </button>
             </>
