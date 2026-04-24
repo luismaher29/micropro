@@ -43,7 +43,7 @@ const shuffleRewards = (items: RewardItem[]): RewardItem[] => {
 };
 
 const getPreferredTopic = (progress: PlayerProgress): string | undefined => {
-  const entries = Object.entries(progress.topicStats);
+  const entries = Object.entries(progress.topicStats ?? {});
   if (entries.length === 0) {
     return undefined;
   }

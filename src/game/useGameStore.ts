@@ -206,6 +206,27 @@ export const useGameStore = create<GameState>()(
     {
       name: STORAGE_KEY,
       version: 1,
+      merge: (persistedState, currentState) => {
+        const typedPersistedState = persistedState as Partial<GameState> | undefined;
+        const persistedProgress = typedPersistedState?.progress;
+
+        return {
+          ...currentState,
+          ...typedPersistedState,
+          progress: {
+            ...currentState.progress,
+            ...persistedProgress,
+            unlockedWorldIds:
+              persistedProgress?.unlockedWorldIds ?? currentState.progress.unlockedWorldIds,
+            levelResults:
+              persistedProgress?.levelResults ?? currentState.progress.levelResults,
+            unlockedRewardIds:
+              persistedProgress?.unlockedRewardIds ?? currentState.progress.unlockedRewardIds,
+            topicStats:
+              persistedProgress?.topicStats ?? currentState.progress.topicStats,
+          },
+        };
+      },
     },
   ),
 );
