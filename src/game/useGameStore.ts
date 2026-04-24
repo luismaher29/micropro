@@ -199,9 +199,15 @@ export const useGameStore = create<GameState>()(
           };
         });
       },
-      resetProgress: () => ({
-        progress: getInitialProgress(),
-      }),
+      resetProgress: () => {
+        if (typeof window !== "undefined") {
+          window.localStorage.removeItem(STORAGE_KEY);
+        }
+
+        set({
+          progress: getInitialProgress(),
+        });
+      },
     }),
     {
       name: STORAGE_KEY,
