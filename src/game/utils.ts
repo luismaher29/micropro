@@ -125,4 +125,5 @@ export const getInitialProgress = (): PlayerProgress => ({
   unlockedWorldIds: [WORLDS[0].id],
   levelResults: {},
   unlockedRewardIds: [],
+  topicStats: {},
 });

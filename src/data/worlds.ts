@@ -37,15 +37,16 @@ export const WORLDS: World[] = [
   {
     id: "world-1",
     order: 1,
+    topic: "piel",
     name: "Fundamentos de la Piel",
     subtitle: "Lee la piel antes de tocar la maquina",
     summary:
       "Base anatomica para decidir profundidad, presion y seguridad desde la primera pasada.",
     theme: {
-      accent: "#2F9B62",
-      surface: "#E8F6EE",
-      shadow: "#1D6E43",
-      glow: "rgba(47, 155, 98, 0.18)",
+      accent: "#D94F7A",
+      surface: "#FCEBF0",
+      shadow: "#B83263",
+      glow: "rgba(217, 79, 122, 0.18)",
     },
     levels: [
       createLevel(
@@ -284,15 +285,16 @@ export const WORLDS: World[] = [
   {
     id: "world-2",
     order: 2,
+    topic: "pigmentologia",
     name: "Logica del Pigmento",
     subtitle: "Entiende base, CI y comportamiento del color",
     summary:
       "Decide tonos con criterio tecnico para evitar virajes, saturacion innecesaria y resultados inestables.",
     theme: {
-      accent: "#3F7DFF",
-      surface: "#EAF1FF",
-      shadow: "#2C56B6",
-      glow: "rgba(63, 125, 255, 0.18)",
+      accent: "#C66586",
+      surface: "#FBEFF3",
+      shadow: "#A54969",
+      glow: "rgba(198, 101, 134, 0.18)",
     },
     levels: [
       createLevel(
@@ -530,15 +532,16 @@ export const WORLDS: World[] = [
   {
     id: "world-3",
     order: 3,
+    topic: "diseno-cejas",
     name: "Arquitectura de Cejas",
     subtitle: "Disena estructura antes del detalle",
     summary:
       "Construye forma, equilibrio y direccion del trazo para resultados naturales y sostenibles.",
     theme: {
-      accent: "#D96E3F",
-      surface: "#FFF0E8",
-      shadow: "#9B4D2A",
-      glow: "rgba(217, 110, 63, 0.18)",
+      accent: "#C8A45D",
+      surface: "#FBF3E5",
+      shadow: "#A88646",
+      glow: "rgba(200, 164, 93, 0.18)",
     },
     levels: [
       createLevel(
@@ -776,15 +779,16 @@ export const WORLDS: World[] = [
   {
     id: "world-4",
     order: 4,
+    topic: "procedimiento",
     name: "Laboratorio del Procedimiento",
     subtitle: "Controla tecnica, seguridad y ritmo de trabajo",
     summary:
       "Optimiza mano, maquina y protocolo para proteger la piel y sostener calidad durante toda la sesion.",
     theme: {
-      accent: "#E0A52B",
-      surface: "#FFF7E1",
-      shadow: "#9C7012",
-      glow: "rgba(224, 165, 43, 0.18)",
+      accent: "#B76D86",
+      surface: "#F8EDF1",
+      shadow: "#975570",
+      glow: "rgba(183, 109, 134, 0.18)",
     },
     levels: [
       createLevel(
@@ -1022,15 +1026,16 @@ export const WORLDS: World[] = [
   {
     id: "world-5",
     order: 5,
+    topic: "retencion",
     name: "Dominio de la Retencion",
     subtitle: "Piensa en sanado, seguimiento y correccion",
     summary:
       "Cierra el ciclo del servicio con criterio de evolucion, retoque y crecimiento profesional.",
     theme: {
-      accent: "#C24672",
-      surface: "#FFEAF1",
-      shadow: "#862E4E",
-      glow: "rgba(194, 70, 114, 0.18)",
+      accent: "#D94F7A",
+      surface: "#FBE7EE",
+      shadow: "#B83263",
+      glow: "rgba(217, 79, 122, 0.18)",
     },
     levels: [
       createLevel(

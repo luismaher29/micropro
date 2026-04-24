@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import { ArrowRight, PartyPopper, X } from "lucide-react";
 import type { Level } from "../game/types";
+import { useGameStore } from "../game/useGameStore";
 
 interface LevelRunnerProps {
   level: Level;
@@ -18,6 +19,7 @@ const confettiPieces = Array.from({ length: 20 }, (_, index) => ({
 }));
 
 export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
+  const registerMistake = useGameStore((state) => state.registerMistake);
   const [stepIndex, setStepIndex] = useState(0);
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [checkedSteps, setCheckedSteps] = useState<Record<string, string>>({});
@@ -38,6 +40,7 @@ export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
 
     if (selectedOptionId !== step.correctOptionId) {
       setMistakes((current) => current + 1);
+      registerMistake(level.id);
     }
     setShowFeedback(true);
   };
@@ -110,7 +113,11 @@ export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
             <div className="runner-options">
               {step.options.map((option) => {
                 const active = selectedOptionId === option.id;
-                const correct = showFeedback && option.id === step.correctOptionId;
+                const correct =
+                  showFeedback &&
+                  isCorrect &&
+                  active &&
+                  option.id === step.correctOptionId;
                 const incorrect = showFeedback && active && option.id !== step.correctOptionId;
 
                 return (
@@ -149,7 +156,11 @@ export function LevelRunner({ level, onClose, onComplete }: LevelRunnerProps) {
                 </div>
                 <div className="feedback-copy">
                   <strong>{isCorrect ? "¡Increible!" : "Casi lo logras"}</strong>
-                  <p>{step.explanation}</p>
+                  <p>
+                    {isCorrect
+                      ? step.explanation
+                      : "Respuesta incorrecta. Revisa el concepto e intentalo de nuevo."}
+                  </p>
                 </div>
               </div>
 

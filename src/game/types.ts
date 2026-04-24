@@ -38,6 +38,7 @@ export interface WorldTheme {
 export interface World {
   id: string;
   order: number;
+  topic: string;
   name: string;
   subtitle: string;
   summary: string;
@@ -49,11 +50,15 @@ export interface RewardItem {
   id: string;
   tipo: "curso" | "masterclass" | "ebook";
   titulo: string;
-  description: string;
+  descripcion: string;
   descuento: string;
   costoMonedas: number;
+  nivelRequerido?: number;
+  recomendadoPor?: string;
   icon: string;
   codigoPlaceholder: string;
+  etiqueta?: "desbloqueado" | "recomendado" | "limitado";
+  vigencia?: string;
 }
 
 export interface LevelResult {
@@ -73,6 +78,7 @@ export interface PlayerProgress {
   unlockedWorldIds: string[];
   levelResults: Record<string, LevelResult>;
   unlockedRewardIds: string[];
+  topicStats: Record<string, { mistakes: number; clears: number }>;
 }
 
 export interface CompletionSummary {
@@ -87,4 +93,5 @@ export interface CompletionSummary {
 export interface PurchaseResult {
   success: boolean;
   message: string;
+  reward?: RewardItem;
 }

@@ -24,6 +24,7 @@ interface CompleteLevelInput {
 interface GameState {
   progress: PlayerProgress;
   completeLevel: (input: CompleteLevelInput) => CompletionSummary | null;
+  registerMistake: (levelId: string) => void;
   purchaseReward: (rewardId: string) => PurchaseResult;
   updateStreak: () => void;
   resetProgress: () => void;
@@ -76,6 +77,14 @@ export const useGameStore = create<GameState>()(
             },
           };
 
+          const topicStats = {
+            ...state.progress.topicStats,
+            [world.topic]: {
+              mistakes: state.progress.topicStats[world.topic]?.mistakes ?? 0,
+              clears: (state.progress.topicStats[world.topic]?.clears ?? 0) + 1,
+            },
+          };
+
           const worldCompleted = world.levels.every(
             (currentLevel) =>
               currentLevel.id === levelId || levelResults[currentLevel.id]?.completed,
@@ -104,11 +113,31 @@ export const useGameStore = create<GameState>()(
               coins: state.progress.coins + Math.max(6, coinsAwarded),
               unlockedWorldIds,
               levelResults,
+              topicStats,
             },
           };
         });
 
         return summary;
+      },
+      registerMistake: (levelId) => {
+        const details = findWorldAndLevel(levelId);
+        if (!details) {
+          return;
+        }
+
+        set((state) => ({
+          progress: {
+            ...state.progress,
+            topicStats: {
+              ...state.progress.topicStats,
+              [details.world.topic]: {
+                mistakes: (state.progress.topicStats[details.world.topic]?.mistakes ?? 0) + 1,
+                clears: state.progress.topicStats[details.world.topic]?.clears ?? 0,
+              },
+            },
+          },
+        }));
       },
       purchaseReward: (rewardId) => {
         const reward = REWARDS.find((item) => item.id === rewardId);
@@ -119,6 +148,17 @@ export const useGameStore = create<GameState>()(
         const state = get();
         if (state.progress.unlockedRewardIds.includes(rewardId)) {
           return { success: false, message: "Ya la desbloqueaste." };
+        }
+
+        const completedLevels = Object.values(state.progress.levelResults).filter(
+          (result) => result.completed,
+        ).length;
+
+        if (reward.nivelRequerido && completedLevels < reward.nivelRequerido) {
+          return {
+            success: false,
+            message: `Necesitas llegar al nivel ${reward.nivelRequerido} para desbloquear esta recompensa.`,
+          };
         }
 
         if (state.progress.coins < reward.costoMonedas) {
@@ -136,6 +176,7 @@ export const useGameStore = create<GameState>()(
         return {
           success: true,
           message: `${reward.titulo} ya quedo reservado como descuento provisional.`,
+          reward,
         };
       },
       updateStreak: () => {
