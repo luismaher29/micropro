@@ -481,8 +481,10 @@ button {
 
 .reward-card {
   display: grid;
+  grid-template-rows: auto 1fr auto;
   gap: 18px;
   padding: 20px;
+  height: 100%;
 }
 
 .reward-card.is-unlocked {
@@ -505,6 +507,19 @@ button {
 .reward-copy {
   display: grid;
   gap: 8px;
+  align-content: start;
+}
+
+.reward-title-row {
+  align-items: flex-start;
+}
+
+.reward-title-row h3 {
+  min-height: 3.15em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .reward-tag-row {
@@ -558,6 +573,11 @@ button {
   letter-spacing: 0.08em;
 }
 
+.reward-link-button {
+  text-decoration: none;
+  width: 100%;
+}
+
 .secondary-button {
   background: linear-gradient(180deg, var(--primary), #cf6c8f);
   color: #fff;
@@ -574,6 +594,10 @@ button {
   background: #f6edf0;
   color: #6e5d66;
   box-shadow: 0 8px 0 #e6d5dc;
+}
+
+.reward-close-button {
+  width: 100%;
 }
 
 .stats-grid {

@@ -210,21 +210,32 @@ export function ShopPage({ progress }: ShopPageProps) {
                 <strong>{revealedReward.titulo}</strong>
               </div>
               <div className="reward-box">
-                <strong>Codigo</strong>
-                <span>{revealedReward.codigoPlaceholder}</span>
+                <strong>Oferta</strong>
+                <span>{revealedReward.descuento}</span>
               </div>
               <div className="reward-box">
-                <strong>Descuento</strong>
-                <span>{revealedReward.descuento}</span>
+                <strong>Destino</strong>
+                <span>Hotmart</span>
               </div>
             </div>
 
+            {revealedReward.link ? (
+              <a
+                className="footer-action is-correct reward-link-button"
+                href={revealedReward.link}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Ir a la oferta
+              </a>
+            ) : null}
+
             <button
               type="button"
-              className="footer-action is-correct"
+              className="ghost-button reward-close-button"
               onClick={() => setRevealedReward(null)}
             >
-              Continuar
+              Seguir explorando
             </button>
           </div>
         </div>
@@ -331,7 +342,7 @@ function RewardCard({
 
         <p>{reward.descripcion}</p>
         <small>
-          {reward.tipo.toUpperCase()} · {reward.descuento} · Codigo {reward.codigoPlaceholder}
+          {reward.tipo.toUpperCase()} · {reward.descuento}
         </small>
 
         {!rewardUnlocked && !enoughLevel ? (
@@ -344,9 +355,20 @@ function RewardCard({
       </div>
 
       {rewardUnlocked ? (
-        <button type="button" className="secondary-button is-complete" disabled>
-          Desbloqueado
-        </button>
+        reward.link ? (
+          <a
+            className="secondary-button is-complete reward-link-button"
+            href={reward.link}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Ir a la oferta
+          </a>
+        ) : (
+          <button type="button" className="secondary-button is-complete" disabled>
+            Desbloqueado
+          </button>
+        )
       ) : enoughLevel && missingCoins === 0 ? (
         <button type="button" className="secondary-button" onClick={() => onRedeem(reward.id)}>
           Canjear recompensa
