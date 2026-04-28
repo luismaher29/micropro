@@ -23,7 +23,7 @@ export function AppShell({
             <div className="brand-badge">M</div>
             <div className="brand-copy">
               <span className="brand-name">MICROPRO</span>
-              <span className="brand-subtitle">Academia de micropigmentacion · by AprendePMU.com</span>
+              <span className="brand-subtitle">Desarrollada por AprendePMU.com</span>
             </div>
           </div>
 
