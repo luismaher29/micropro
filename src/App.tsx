@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { AppShell } from "./components/AppShell";
 import { LevelRunner } from "./components/LevelRunner";
 import { RewardModal } from "./components/RewardModal";
@@ -38,31 +39,34 @@ export default function App() {
   };
 
   return (
-    <AppShell activeTab={activeTab} onTabChange={setActiveTab} progress={progress}>
-      {activeTab === "map" ? (
-        <MapPage progress={progress} onSelectLevel={setActiveLevelId} />
-      ) : null}
+    <>
+      <AppShell activeTab={activeTab} onTabChange={setActiveTab} progress={progress}>
+        {activeTab === "map" ? (
+          <MapPage progress={progress} onSelectLevel={setActiveLevelId} />
+        ) : null}
 
-      {activeTab === "shop" ? <ShopPage progress={progress} /> : null}
+        {activeTab === "shop" ? <ShopPage progress={progress} /> : null}
 
-      {activeTab === "profile" ? (
-        <ProfilePage progress={progress} onReset={resetProgress} />
-      ) : null}
+        {activeTab === "profile" ? (
+          <ProfilePage progress={progress} onReset={resetProgress} />
+        ) : null}
 
-      {currentLevel ? (
-        <LevelRunner
-          level={currentLevel}
-          onClose={() => setActiveLevelId(null)}
-          onComplete={handleLevelComplete}
-        />
-      ) : null}
+        {currentLevel ? (
+          <LevelRunner
+            level={currentLevel}
+            onClose={() => setActiveLevelId(null)}
+            onComplete={handleLevelComplete}
+          />
+        ) : null}
 
-      {completionSummary ? (
-        <RewardModal
-          summary={completionSummary}
-          onClose={() => setCompletionSummary(null)}
-        />
-      ) : null}
-    </AppShell>
+        {completionSummary ? (
+          <RewardModal
+            summary={completionSummary}
+            onClose={() => setCompletionSummary(null)}
+          />
+        ) : null}
+      </AppShell>
+      <Analytics />
+    </>
   );
 }
