@@ -33,14 +33,21 @@ const iconMap = {
   Sparkles,
 };
 
-const shuffleRewards = (items: RewardItem[]): RewardItem[] => {
-  const clone = [...items];
-  for (let index = clone.length - 1; index > 0; index -= 1) {
-    const randomIndex = Math.floor(Math.random() * (index + 1));
-    [clone[index], clone[randomIndex]] = [clone[randomIndex], clone[index]];
-  }
-  return clone;
-};
+const sortRewardsByProgression = (items: RewardItem[]): RewardItem[] =>
+  [...items].sort((left, right) => {
+    const leftLevel = left.nivelRequerido ?? 0;
+    const rightLevel = right.nivelRequerido ?? 0;
+
+    if (leftLevel !== rightLevel) {
+      return leftLevel - rightLevel;
+    }
+
+    if (left.costoMonedas !== right.costoMonedas) {
+      return left.costoMonedas - right.costoMonedas;
+    }
+
+    return (left.precioOfertaUsd ?? 0) - (right.precioOfertaUsd ?? 0);
+  });
 
 const getPreferredTopic = (progress: PlayerProgress): string | undefined => {
   const entries = Object.entries(progress.topicStats ?? {});
@@ -68,7 +75,7 @@ export function ShopPage({ progress }: ShopPageProps) {
       activeFilter === "todos"
         ? REWARDS
         : REWARDS.filter((reward) => reward.tipo === activeFilter);
-    return shuffleRewards(source);
+    return sortRewardsByProgression(source);
   }, [activeFilter]);
 
   const unlockedRewards = filteredRewards.filter((reward) =>
@@ -87,7 +94,10 @@ export function ShopPage({ progress }: ShopPageProps) {
         (right.recomendadoPor === preferredTopic ? 3 : 0) +
         (progress.coins >= right.costoMonedas ? 2 : 0) +
         (right.etiqueta === "limitado" ? 1 : 0);
-      return rightScore - leftScore;
+      if (rightScore !== leftScore) {
+        return rightScore - leftScore;
+      }
+      return (left.nivelRequerido ?? 0) - (right.nivelRequerido ?? 0);
     })
     .slice(0, 4);
 

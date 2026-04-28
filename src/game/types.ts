@@ -55,6 +55,9 @@ export interface RewardItem {
   costoMonedas: number;
   nivelRequerido?: number;
   recomendadoPor?: string;
+  link?: string;
+  precioRegularUsd?: number;
+  precioOfertaUsd?: number;
   icon: string;
   codigoPlaceholder: string;
   etiqueta?: "desbloqueado" | "recomendado" | "limitado";
